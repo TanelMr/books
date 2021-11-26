@@ -1,26 +1,24 @@
 // assign variables
-
-const authorInput = document.querySelector("#authorInput");
-const titleInput = document.querySelector("#titleInput");
-const ISBNInput = document.querySelector("#ISBN");
 const form = document.querySelector("form");
-const booksList = document.querySelector("tbody");
+const booksList = document.querySelector(".table");
 
 //add event listeners for buttons
 form.addEventListener("submit", addBook);
 booksList.addEventListener("click", deleteTask);
 
-
-
 // function for deleting books
 function deleteTask(event){
     if(event.target.textContent == "X"){
-        event.target.parent.parentElement.remove();
-        }
+        event.target.parentElement.parentElement.remove();
+    }
 }
 
 // function for adding books
 function addBook (event) {
+
+    const authorInput = document.querySelector("#authorInput");
+    const titleInput = document.querySelector("#titleInput");
+    const ISBNInput = document.querySelector("#ISBN");
 
     //create table row
     const tr = document.createElement("tr")
@@ -41,6 +39,8 @@ function addBook (event) {
     tdAuthor.appendChild(authorText)
     //add table data to table row
     tr.appendChild(tdAuthor);
+    //clear input
+    authorInput.value = "";
 
     //same logic for book title
     const title = titleInput.value;
@@ -48,6 +48,7 @@ function addBook (event) {
     const tdTitle = document.createElement("td");
     tdTitle.appendChild(titleText);
     tr.appendChild(tdTitle);
+    titleInput.value = "";
 
 
     //same logic for book ISBN
@@ -56,7 +57,7 @@ function addBook (event) {
     const tdISBN = document.createElement("td");
     tdISBN.appendChild(ISBNtext);
     tr.appendChild(tdISBN);
-    ISBN.value = "";
+    ISBNInput.value = "";
 
 
     //create link element
@@ -70,4 +71,6 @@ function addBook (event) {
     //add link to td
     tdX.appendChild(link);
     tr.appendChild(tdX);
+
+    event.preventDefault();
 }
