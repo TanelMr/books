@@ -72,5 +72,23 @@ function addBook (event) {
     tdX.appendChild(link);
     tr.appendChild(tdX);
 
+    //add book to localstorage
+    const book = [title, author, ISBN];
+    addBooksToLocalStorage(book)
+
     event.preventDefault();
+}
+
+// adding books to localstorage
+function addBooksToLocalStorage(book){
+    let books;
+
+    if(localStorage.getItem("books") === null){
+        books = [];
+    }
+    else {
+        books = JSON.parse(localStorage.getItem("books"));
+    }
+    books.push(book);
+    localStorage.setItem("books", JSON.stringify(books));
 }
