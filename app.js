@@ -52,46 +52,27 @@ function addBook (event) {
     const titleInput = document.querySelector("#titleInput");
     const ISBNInput = document.querySelector("#ISBN");
 
-    //create table row
+    const author = authorInput.value;
+    const title = titleInput.value;
+    const ISBN = ISBNInput.value;
+
+    //create array for book
+    const book = [author, title, ISBN]
+    console.log(book)
+    event.preventDefault()
+
     const tr = document.createElement("tr")
     //define table body element
     const tbody = document.querySelector("tbody")
     //add table row to table body
     tbody.appendChild(tr)
 
-
-
-    //define input value for author
-    const author = authorInput.value;
-    //create td element for value
-    const tdAuthor = document.createElement("td");
-    // create text value for author
-    const authorText = document.createTextNode(author);
-    //add text to table data
-    tdAuthor.appendChild(authorText)
-    //add table data to table row
-    tr.appendChild(tdAuthor);
-    //clear input
-    authorInput.value = "";
-
-    //same logic for book title
-    const title = titleInput.value;
-    const titleText = document.createTextNode(title);
-    const tdTitle = document.createElement("td");
-    tdTitle.appendChild(titleText);
-    tr.appendChild(tdTitle);
-    titleInput.value = "";
-
-
-    //same logic for book ISBN
-    const ISBN = ISBNInput.value;
-    const ISBNtext = document.createTextNode(ISBN);
-    const tdISBN = document.createElement("td");
-    tdISBN.appendChild(ISBNtext);
-    tr.appendChild(tdISBN);
-    ISBNInput.value = "";
-
-
+    for(let i=0; i<book.length; i++) {
+        let td = document.createElement("td");
+        let bookText = document.createTextNode(book[i]);
+        td.appendChild(bookText);
+        tr.appendChild(td);
+    }
     //create link element
     const link = document.createElement("a");
     //add href
@@ -103,10 +84,15 @@ function addBook (event) {
     //add link to td
     tdX.appendChild(link);
     tr.appendChild(tdX);
+    booksList.appendChild(tbody);
 
     //add book to localstorage
-    const book = [author, title, ISBN];
-    addBookToLocalStorage(book)
+    addBookToLocalStorage(book);
+
+    //clear inputs
+    titleInput.value = "";
+    authorInput.value = "";
+    ISBNInput.value = "";
 
     event.preventDefault();
 }
