@@ -18,7 +18,12 @@ function getBooksFromLocalStorage (){
     }
     for(let i=0; i<books.length; i++){
         let book = books[i];
+        //create table row
         const tr = document.createElement("tr")
+        //define table body element
+        const tbody = document.querySelector("tbody")
+        //add table row to table body
+        tbody.appendChild(tr)
         for(let i=0; i<book.length; i++) {
         let td = document.createElement("td");
         let bookText = document.createTextNode(book[i]);
@@ -36,7 +41,7 @@ function getBooksFromLocalStorage (){
         //add link to td
         tdX.appendChild(link);
         tr.appendChild(tdX);
-        booksList.appendChild(tr);
+        booksList.appendChild(tbody);
     }
     }
 
