@@ -1,17 +1,44 @@
-// assign variables
+//variables
 const form = document.querySelector("form");
 const booksList = document.querySelector(".table");
 
-//add event listeners for buttons
+//event listeners
 form.addEventListener("submit", addBook);
 booksList.addEventListener("click", deleteTask);
+document.addEventListener("DOMContentLoaded", getBooksFromLocalStorage);
 
-// function for deleting books
-function deleteTask(event){
-    if(event.target.textContent == "X"){
-        event.target.parentElement.parentElement.remove();
+function getBooksFromLocalStorage (){
+    let books;
+    // check if an array has been created
+    if(localStorage.getItem("books") === null){
+        books = [];
     }
-}
+    else {
+        books = JSON.parse(localStorage.getItem("books"));
+    }
+    for(let i=0; i<books.length; i++){
+        let book = books[i];
+        const tr = document.createElement("tr")
+        for(let i=0; i<book.length; i++) {
+        let td = document.createElement("td");
+        let bookText = document.createTextNode(book[i]);
+        td.appendChild(bookText);
+        tr.appendChild(td);
+        }
+        //create link element
+        const link = document.createElement("a");
+        //add href
+        link.setAttribute("href", "#");
+        // add "X" text to link
+        link.appendChild(document.createTextNode("X"));
+        // create td for X
+        const tdX = document.createElement("td");
+        //add link to td
+        tdX.appendChild(link);
+        tr.appendChild(tdX);
+        booksList.appendChild(tr);
+    }
+    }
 
 // function for adding books
 function addBook (event) {
@@ -73,14 +100,14 @@ function addBook (event) {
     tr.appendChild(tdX);
 
     //add book to localstorage
-    const book = [title, author, ISBN];
-    addBooksToLocalStorage(book)
+    const book = [author, title, ISBN];
+    addBookToLocalStorage(book)
 
     event.preventDefault();
 }
 
-// adding books to localstorage
-function addBooksToLocalStorage(book){
+// add book to localstorage
+function addBookToLocalStorage(book){
     let books;
 
     if(localStorage.getItem("books") === null){
@@ -90,5 +117,34 @@ function addBooksToLocalStorage(book){
         books = JSON.parse(localStorage.getItem("books"));
     }
     books.push(book);
+    localStorage.setItem("books", JSON.stringify(books));
+}
+
+// delete single book
+function deleteTask(event){
+    if(event.target.textContent == "X"){
+        event.target.parentElement.parentElement.remove();
+    }
+
+    let getBookISBN = event.target.parentElement.previousElementSibling.textContent;
+    deleteBookFromLocalStorage(getBookISBN);
+}
+
+// delete book from localstorage
+function deleteBookFromLocalStorage(getBookISBN){
+    let books;
+    if(localStorage.getItem("books") === null){
+        books = [];
+    }
+    else {
+        books = JSON.parse(localStorage.getItem("books"));
+    }
+    //loop through each array element
+    books.forEach(
+        function (book, index){
+        if(book[2] === getBookISBN) {
+            books.splice(index, 1);
+        }
+    });
     localStorage.setItem("books", JSON.stringify(books));
 }
